@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from "react";
 // no default export, so we're importing everyting from this library
 import * as rtl from "@testing-library/react";
@@ -5,8 +6,9 @@ import * as rtl from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import App from "./App";
 
-
+// first param should match what you're importing the thing from 
 jest.mock('axios', () => ({
+  // jest.fn is a SPY
   get: jest.fn(() => Promise.resolve({
     data: {
       message: ['foo.jpg', 'bar.jpg']
@@ -17,6 +19,26 @@ jest.mock('axios', () => ({
 // this just allows react-testing-library to do some
 // routine cleanup after each test runs (to reset the DOM and such)
 afterEach(rtl.cleanup);
+
+test('made API call', async () => {
+  const wrapper = rtl.render(<App />);
+  await wrapper.findAllByAltText(/dog/i)
+
+  expect(axios.get).toHaveBeenCalled()
+})
+
+test('cleared images', async () => {
+  const wrapper = rtl.render(<App />);
+  await wrapper.findAllByAltText(/dog/i)
+
+  const clear = wrapper.getByText(/clear/i)
+
+  rtl.act(() => {
+    rtl.fireEvent.click(clear)
+  })
+
+  expect(wrapper.queryByAltText(/dog/i)).toBeNull()
+})
 
 test("Render the heading", async () => {
   // render our React app into an in-memory DOM so we can test against it

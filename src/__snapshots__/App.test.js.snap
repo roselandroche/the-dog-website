@@ -42,5 +42,8 @@ exports[`<App /> snapshot 1`] = `
       src="bar.jpg"
     />
   </div>
+  <button>
+    Clear Images
+  </button>
 </DocumentFragment>
 `;
