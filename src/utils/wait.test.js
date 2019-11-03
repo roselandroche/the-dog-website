@@ -20,6 +20,7 @@ jest.useFakeTimers()
 //     })
 // })
 
+
 // method 3 - Jasons fave - industry standard
 test('wait for promise to resolve', async () => {
     const spy = jest.fn()
